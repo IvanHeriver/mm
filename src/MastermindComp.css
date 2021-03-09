@@ -1,0 +1,105 @@
+/* in game buttons */
+.game button {
+    height: 50px;
+    width: 50px;
+}
+
+.btn-img {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+/* positionning of main game elements */
+.mm-ingame-btns-left {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-100%, -50%);
+}
+.mm-ingame-btns-right {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(100%, -50%);
+}
+.one-color-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 5px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* the colored pin formatting */
+.one-color {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    margin: 2px;
+    border: 1px solid black;
+}
+.one-color-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    margin: 2px;
+    padding: 0;
+    border: none;
+    cursor:default;
+}
+.one-color-btn:hover {
+    border: none;
+}
+.one-color-image {
+    /* width: 110%;
+    height: 110%; */
+    /* border-radius: 25px; */
+    /* margin: 2px; */
+
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+/* editable colors */
+.mm-editable-color {
+    position: relative;
+}
+.mm-color-options {
+    position: absolute;
+    bottom: 0;
+    transform: translateY(100%);
+}
+
+/* result pins */
+.mm-result {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-100%, -50%);
+}
+.mm-res-pin {
+    width: 15px;
+    height: 15px;
+    border-radius: 8px;
+    margin: 2px;
+    border: 1px solid transparent;
+}
+.gcgp {
+    background-color: black;
+}
+.gcbp {
+    background-color: white;
+    border: 1px solid black;
+}
