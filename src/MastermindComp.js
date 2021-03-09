@@ -64,7 +64,7 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
     const [tmpColor, setTmpColor] = useState(0);
     const [editOn, setEditOn] = useState(false);
     useEffect(()=> {
-        const listenerAction = () => {
+        const listenerAction = (e) => {
             setEditOn(false);
         }
         window.addEventListener("mouseup", listenerAction)
@@ -102,9 +102,12 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
                         return (
                             <div key={i}
                             className="mm-color-option"
-                            onMouseEnter={()=>{onMouseEnterAction(i)}}
-                            onMouseLeave={()=>{onMouseLeaveAction(i)}}
-                            onMouseUp={()=>{onMouseUpAction(i)}}
+                            onMouseEnter={(e)=>{onMouseEnterAction(i)}}
+                            onMouseLeave={(e)=>{onMouseLeaveAction(i)}}
+                            onMouseUp={(e)=>{
+                                e.preventDefault();
+                                onMouseUpAction(i)
+                            }}
                             >
                                 <MMcolor color={e.color} />
                             </div>
