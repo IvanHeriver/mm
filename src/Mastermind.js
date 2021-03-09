@@ -1,11 +1,8 @@
 import React, {useState} from "react";
 import "./Mastermind.css"
 import {randomGuess, checkGuess} from "./game_logic/utils";
-import MMconfig from "./MMconfig";
 import {MMtoGuess, MMguessBuilder, MMguess} from "./MastermindComp";
 import "./MastermindComp.css";
-import ih_cross_o from "./img/ih_cross_o.svg"
-import ih_bars from "./img/ih_bars.svg"
 
 const randomId = () => {
     return (
@@ -85,26 +82,7 @@ const Mastermind = () => {
             <div className="title">
                 Mastermind
             </div>          
-            {/* <button className="toggle-config" onClick={()=>setConfigOn(p=>!p)}>
-                {configOn ? (
-                <img src={ih_cross_o} 
-                    className="mm-img-config"
-                />
-                ) : (
-                    <img src={ih_bars} 
-                    className="mm-img-config"
-                />
-                )
-                }
-            </button> */}
             <div className="game-config-container">
-                <div className="config">
-                {/* <MMconfig
-                    holes={gameDim.holes}
-                    colors={gameDim.colors}
-                    colorOptions={colorOptions}
-                /> */}
-                </div>
                 <div className="game">
                     {/* to guess object */}
                     <MMtoGuess
@@ -124,9 +102,6 @@ const Mastermind = () => {
                     })}
                     {/* new guess */}
                     {gameOver ? null : <MMguessBuilder
-                        // nHoles={toGuess.length}
-                        // colorOptions={colorOptions}
-                        // onSubmit={onSubmitGuess}
                         colorOptions={colorOptions}
                         colors={currentGuess}
                         setColors={(c)=>{setCurrentGuess(c)}}
