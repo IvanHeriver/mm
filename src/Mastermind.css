@@ -21,7 +21,7 @@ button {
     background-color: var(--midcolor);
     border-radius: 30px;
     padding: 5px;
-    min-height: 30px;
+    /* min-height: 30px; */
     cursor: pointer;
     margin: 5px;
 }
