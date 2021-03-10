@@ -84,7 +84,7 @@ const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp, time}) => {
 }
 
 const MMcolorEditor = ({colorOptions, color, setColor}) => {
-    const [tmpColor, setTmpColor] = useState(0);
+    // const [tmpColor, setTmpColor] = useState(0);
     const [editOn, setEditOn] = useState(false);
     useEffect(()=> {
         const listenerAction = (e) => {
@@ -119,27 +119,29 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
         <div className="mm-editable-color" 
             onTouchStart={()=> {
                 setEditOn(true)
-                setTmpColor(color)
+                // setTmpColor(color)
             }}
             onMouseDown={()=> {
                 setEditOn(true)
-                setTmpColor(color)
+                // setTmpColor(color)
             }}
             onTouchMove={(e)=> {
                 const id = getElemIdFromTouchEvent(e)
-                id ? setColor(id) : setColor(tmpColor)
+                // id ? setColor(id) : setColor(tmpColor)
+                if (id) setColor(id) 
             }}
             onMouseMove={(e)=>{
                 if (editOn) {
                     const id = getElemIdFromMouseEvent(e)
-                    id ? setColor(id) : setColor(tmpColor)
+                    // id ? setColor(id) : setColor(tmpColor)
+                    if (id) setColor(id) 
                 }
             }}
-            onMouseLeave={(e)=>{
-                if (editOn) {
-                    setColor(tmpColor)
-                }
-            }}
+            // onMouseLeave={(e)=>{
+            //     if (editOn) {
+            //         setColor(tmpColor)
+            //     }
+            // }}
             onTouchEnd={(e)=> {
                 const id = getElemIdFromTouchEvent(e)
                 if (id) setColor(id)
@@ -154,7 +156,6 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
             <MMcolor color={colorOptions[color].color} />
             { editOn ? (
                 <div className="mm-color-options" style={{['--m']: 6, ['--tan']: 0.41}}>
-                {/* <MMcolorOptions colorOptions={colorOptions} /> */}
                 {
                     colorOptions.map((e, i) => {
                         if (i === 0) {
@@ -163,7 +164,6 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
                         return (
                             <div key={i}
                             idkey={i}
-                            // style={"--i="+(i+1)}
                             style={{['--i']: i+1}}
                             >
                                 <MMcolor color={e.color} />

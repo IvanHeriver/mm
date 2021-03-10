@@ -76,17 +76,13 @@
 /* editable colors */
 .mm-editable-color {
     position: relative;
-    min-height: 45px;
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .mm-color-options {
-    /* position: relative; */
-    /* bottom: 0;
-    transform: translateY(50%); */
-    /* top: 50%;
-    left: 50%; */
-    /* transform: translateY(-50%); */
-    /* transform: translateX(50%); */
-
+    /* amazing solution from : https://stackoverflow.com/a/12817454 */
     --d: 40px; /* image size */
     --rel: 0; /* how much extra space we want between images, 1 = one image size */
     --r: calc(.5*(1 + var(--rel))*var(--d)/var(--tan)); /* circle radius */
@@ -96,9 +92,8 @@
     height: var(--s);
 
     border: 60px solid var(--ligcolor);
-    /* background-color: var(--ligcolor); */
     border-radius: calc(var(--r)*2);
-    padding: 19px;
+    padding: 20px;
 
     top: 50%;
     left: 50%;
