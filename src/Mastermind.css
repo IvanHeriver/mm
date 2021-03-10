@@ -43,14 +43,17 @@ button:hover {
 
 .mm-app-container .game {
     /* min-height: calc(100vh - 50px); */
-    min-height: calc(100vh);
+    /* min-height: calc(100vh); */
+    min-height: 100vh;
+    /* height: auto; */
     background-color: var(--botcolor);
     width: 100%;
     display: flex;
     flex-direction: column;
     align-content: center;
     justify-content: flex-start;
-    padding-top: 10px;
+    /* padding-top: 10px; */
+    padding-bottom: 100px;
 }
 
 /* @media(min-width:600px) {

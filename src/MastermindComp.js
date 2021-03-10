@@ -37,41 +37,40 @@ const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp, time}) => {
         return m+":"+s
     }
     return (
+        <div className="mm-toguess-container">
         <div className="one-color-row">
-            <div className="mm-ingame-btns-right">
-                {
-                    showTimer ? <div className="mm-timer"><div>{formatTime(time)}</div></div> : null
-                }
-                <button onClick={()=>setShowTimer(t=>!t)}>
-                    <img src={showTimer ? notimer_img : timer_img} className="btn-img" draggable="false"
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                    }}
-                    />
-                </button>
-            </div>
-            <div className="mm-ingame-btns-left">
-                <button onClick={onGiveUp}> 
-                <img src={show_img} className="btn-img" draggable="false"
-                    style={{
-                        width: "90%",
-                        height: "90%",
-                        paddingLeft: "0px",
-                        paddingTop: "2px",
-                        
-                    }}/>
-                </button>    
-                <button onClick={onNewGame}>
-                <img src={restart_img} className="btn-img" draggable="false"
-                    style={{
-                        width: "90%",
-                        height: "90%",
-                        paddingLeft: "0px",
-                        paddingTop: "2px"
-                    }}/>
-                </button>    
-            </div>
+            <button onClick={onGiveUp}> 
+            <img src={show_img} className="btn-img" draggable="false"
+                style={{
+                    width: "90%",
+                    height: "90%",
+                    paddingLeft: "0px",
+                    paddingTop: "2px",
+                    
+                }}/>
+            </button>    
+            <button onClick={onNewGame}>
+            <img src={restart_img} className="btn-img" draggable="false"
+                style={{
+                    width: "90%",
+                    height: "90%",
+                    paddingLeft: "0px",
+                    paddingTop: "2px"
+                }}/>
+            </button>    
+            {
+                showTimer ? <div className="mm-timer"><div>{formatTime(time)}</div></div> : null
+            }
+            <button onClick={()=>setShowTimer(t=>!t)}>
+                <img src={showTimer ? notimer_img : timer_img} className="btn-img" draggable="false"
+                style={{
+                    width: "100%",
+                    height: "100%",
+                }}
+                />
+            </button>
+        </div>
+        <div className="one-color-row mm-rounded-border">
             {
                 toGuess.map((e, i)=> {
                     return (
@@ -79,6 +78,7 @@ const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp, time}) => {
                     )
                 })
             }
+        </div>
         </div>
     )
 }
@@ -153,7 +153,8 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
         >
             <MMcolor color={colorOptions[color].color} />
             { editOn ? (
-                <div className="mm-color-options">
+                <div className="mm-color-options" style={{['--m']: 6, ['--tan']: 0.41}}>
+                {/* <MMcolorOptions colorOptions={colorOptions} /> */}
                 {
                     colorOptions.map((e, i) => {
                         if (i === 0) {
@@ -162,7 +163,8 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
                         return (
                             <div key={i}
                             idkey={i}
-                            className="mm-color-option"
+                            // style={"--i="+(i+1)}
+                            style={{['--i']: i+1}}
                             >
                                 <MMcolor color={e.color} />
                             </div>
@@ -174,6 +176,23 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
                 null
             )}
         </div>
+    )
+}
+
+const MMcolorOptions = ({colorOptions}) => {
+    return (
+        colorOptions.map((e, i) => {
+            if (i === 0) {
+                return (null)
+            }
+            return (
+                <div key={i}
+                idkey={i}
+                >
+                    <MMcolor color={e.color} />
+                </div>
+            )
+        })
     )
 }
 

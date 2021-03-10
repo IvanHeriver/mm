@@ -37,7 +37,18 @@
     margin-right: auto;
 }
 
+.mm-rounded-border {
+    border: 1px solid var(--strcolor);
+    border-radius: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
 
+.mm-toguess-container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
 /* the colored pin formatting */
 .one-color {
     margin: 2px;
@@ -65,11 +76,46 @@
 /* editable colors */
 .mm-editable-color {
     position: relative;
+    min-height: 45px;
 }
 .mm-color-options {
+    /* position: relative; */
+    /* bottom: 0;
+    transform: translateY(50%); */
+    /* top: 50%;
+    left: 50%; */
+    /* transform: translateY(-50%); */
+    /* transform: translateX(50%); */
+
+    --d: 40px; /* image size */
+    --rel: 0; /* how much extra space we want between images, 1 = one image size */
+    --r: calc(.5*(1 + var(--rel))*var(--d)/var(--tan)); /* circle radius */
+    --s: calc(2*var(--r) + var(--d)); /* container size */
     position: absolute;
-    bottom: 0;
-    transform: translateY(100%);
+    width: var(--s); 
+    height: var(--s);
+
+    border: 60px solid var(--ligcolor);
+    /* background-color: var(--ligcolor); */
+    border-radius: calc(var(--r)*2);
+    padding: 19px;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+.mm-color-options div {
+    position: absolute;
+    top: 50%; left: 50%;
+    margin: calc(-.5*var(--d));
+    width: var(--d); height: var(--d);
+    --az: calc(var(--i)*1turn/var(--m));
+    transform: 
+      rotate(var(--az)) 
+      translate(var(--r))
+      rotate(calc(-1*var(--az)))
 }
 
 /* result pins */
@@ -102,7 +148,9 @@
     font-size: 1.2rem;
     padding-left: 10px;
     padding-right: 10px;
-    margin: auto;
+    /* margin: auto; */
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .mm-number {
