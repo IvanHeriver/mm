@@ -42,7 +42,8 @@ button:hover {
 }
 
 .mm-app-container .game {
-    min-height: calc(100vh - 50px);
+    /* min-height: calc(100vh - 50px); */
+    min-height: calc(100vh);
     background-color: var(--botcolor);
     width: 100%;
     display: flex;

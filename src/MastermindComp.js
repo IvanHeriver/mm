@@ -47,9 +47,6 @@ const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp, time}) => {
                     style={{
                         width: "100%",
                         height: "100%",
-                        // paddingLeft: "-50px",
-                        // paddingTop: "2px",
-                        
                     }}
                     />
                 </button>

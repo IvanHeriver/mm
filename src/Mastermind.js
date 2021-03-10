@@ -94,9 +94,9 @@ const Mastermind = () => {
 
     return (
         <div className="mm-app-container">
-            <div className="title">
+            {/* <div className="title">
                 MindMaster
-            </div>          
+            </div>           */}
             <div className="game-config-container">
                 <div className="game">
                     {/* to guess object */}
