@@ -3,6 +3,8 @@ import play_img from "./img/play_img.svg"
 import reset_img from "./img/reset_img.svg"
 import restart_img from "./img/restart_img.svg"
 import show_img from "./img/show_img.svg"
+import timer_img from "./img/timer_img.svg"
+import notimer_img from "./img/notimer_img.svg"
 
 const MMcolor = ({color}) => {
     const bgColor = color === "transparent" ? "grey" : "transparent"
@@ -17,17 +19,41 @@ const MMcolor = ({color}) => {
         >
         {
             color === "transparent" ? null :
-            <img src={process.env.PUBLIC_URL+"/"+color+"_pin.png"} className="one-color-img" draggable="false"/>
+            <img src={process.env.PUBLIC_URL+"/"+color+"_pin.png"} className="one-color-img" draggable="false" width="40px" height="40px"/>
         }
         </button>
     )
 }
 
 
-const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp}) => {
-
+const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp, time}) => {
+    const [showTimer, setShowTimer] = useState(true);
+    const formatTime = (t) => {
+        // if (t === 0)  return "00:00"
+        let m = Math.floor(t / 60);
+        let s = t - m * 60;
+        if (m < 10) m = "0"+m
+        if (s < 10) s = "0"+s
+        return m+":"+s
+    }
     return (
         <div className="one-color-row">
+            <div className="mm-ingame-btns-right">
+                {
+                    showTimer ? <div className="mm-timer"><div>{formatTime(time)}</div></div> : null
+                }
+                <button onClick={()=>setShowTimer(t=>!t)}>
+                    <img src={showTimer ? notimer_img : timer_img} className="btn-img" draggable="false"
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                        // paddingLeft: "-50px",
+                        // paddingTop: "2px",
+                        
+                    }}
+                    />
+                </button>
+            </div>
             <div className="mm-ingame-btns-left">
                 <button onClick={onGiveUp}> 
                 <img src={show_img} className="btn-img" draggable="false"
@@ -74,22 +100,59 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
             }
         )
     }, [setEditOn])
-    const onMouseDownAction = () => {
-        setEditOn(true);
-        setTmpColor(color);
+    const getElemIdFromTouchEvent = (event) => {
+        const elem = document.elementFromPoint(
+            event.changedTouches[0].clientX,
+            event.changedTouches[0].clientY
+        )
+        if (!elem) return null
+        if (!elem.parentElement.parentElement.getAttribute("idkey")) return null
+        return(parseInt(elem.parentElement.parentElement.getAttribute("idkey")))
     }
-    const onMouseUpAction = (i) => {
-        setColor(i)
-    }
-    const onMouseEnterAction = (i) => {
-        setColor(i)
-    }
-    const onMouseLeaveAction = (i) => {
-        setColor(tmpColor)
+    const getElemIdFromMouseEvent = (event) => {
+        const elem = document.elementFromPoint(
+            event.clientX,
+            event.clientY
+        )
+        if (!elem) return null
+        if (!elem.parentElement.parentElement.getAttribute("idkey")) return null
+        return(parseInt(elem.parentElement.parentElement.getAttribute("idkey")))
     }
     return (
-        <div className="mm-editable-color"
-            onMouseDown={onMouseDownAction}
+        <div className="mm-editable-color" 
+            onTouchStart={()=> {
+                setEditOn(true)
+                setTmpColor(color)
+            }}
+            onMouseDown={()=> {
+                setEditOn(true)
+                setTmpColor(color)
+            }}
+            onTouchMove={(e)=> {
+                const id = getElemIdFromTouchEvent(e)
+                id ? setColor(id) : setColor(tmpColor)
+            }}
+            onMouseMove={(e)=>{
+                if (editOn) {
+                    const id = getElemIdFromMouseEvent(e)
+                    id ? setColor(id) : setColor(tmpColor)
+                }
+            }}
+            onMouseLeave={(e)=>{
+                if (editOn) {
+                    setColor(tmpColor)
+                }
+            }}
+            onTouchEnd={(e)=> {
+                const id = getElemIdFromTouchEvent(e)
+                if (id) setColor(id)
+                setEditOn(false)
+
+            }}
+            onMouseUp={(e)=> {
+                const id = getElemIdFromMouseEvent(e)
+                if (id) setColor(id)
+            }}
         >
             <MMcolor color={colorOptions[color].color} />
             { editOn ? (
@@ -101,13 +164,8 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
                         }
                         return (
                             <div key={i}
+                            idkey={i}
                             className="mm-color-option"
-                            onMouseEnter={(e)=>{onMouseEnterAction(i)}}
-                            onMouseLeave={(e)=>{onMouseLeaveAction(i)}}
-                            onMouseUp={(e)=>{
-                                e.preventDefault();
-                                onMouseUpAction(i)
-                            }}
                             >
                                 <MMcolor color={e.color} />
                             </div>
@@ -123,6 +181,7 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
 }
 
 const MMguessBuilder = ({colorOptions, colors, setColors, onSubmit}) => {
+    // const [isEditorOpen, setIsEditorOpen] = useState(Array(colors.length).fill(0));
     const [isValid, setIsValid] = useState(false);
     useEffect(()=> {
         setIsValid(colors.map((e)=>e!=0).reduce((p, c)=>p && c))
@@ -204,9 +263,10 @@ const MMguessRes = ({gcgp, gcbp}) => {
     )
 }
 
-const MMguess = ({colors, result, colorOptions}) => {
+const MMguess = ({colors, result, colorOptions, number}) => {
     return (
         <div className="one-color-row">
+            <div className="mm-ingame-btns-right"><div className="mm-number">{number}</div></div>
             <MMguessRes gcgp={result.gcgp} gcbp={result.gcbp} />
             {
                 colors.map((e, i) => {
