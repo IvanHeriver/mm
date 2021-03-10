@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import "./Mastermind.css"
 import {randomGuess, checkGuess} from "./game_logic/utils";
 import {MMtoGuess, MMguessBuilder, MMguess} from "./MastermindComp";
@@ -52,35 +52,50 @@ const Mastermind = () => {
     const [gameOver, setGameOver] = useState(false);
     const [guesses, setGuesses] = useState([]);
     const [currentGuess, setCurrentGuess] = useState(Array(gameDim.holes).fill(0))
+    
+    const [time, setTime] = useState(0);
+    const [timer, setTimer] = useState(null);
 
-    const [configOn, setConfigOn] = useState(false);
+    const resetTimer = () => {
+        setTime(0);
+    }
+    const startTimer = () => {
+        setTimer(setInterval(()=>{
+            setTime(t=>t+1)
+        }, 1000))
+    }
+    const stopTimer = () => {
+        clearInterval(timer)
+    }
 
     const onNewGame = () => {
         setGuesses([])
         setCurrentGuess(Array(gameDim.holes).fill(0))
         setToGuess(randomGuess(gameDim.holes, gameDim.colors))
         setGameOver(false)
+        resetTimer();
     }
 
     const onGiveUp = () => {
         setGameOver(true)
+        stopTimer();
     }
     const onSubmitGuess = (g) => {
+        if (guesses.length === 0) startTimer();
         const guessRes = checkGuess(g, toGuess)
         if (guessRes.gcgp === toGuess.length) {
             setGameOver(true);
+            stopTimer();
         }
         setGuesses(pG => {
             return ([...pG, {g: g, r:guessRes}])
         })
     }
 
-    
-
     return (
-        <div className="mm-app-container" config={configOn.toString()}>
+        <div className="mm-app-container">
             <div className="title">
-                Mastermind
+                MindMaster
             </div>          
             <div className="game-config-container">
                 <div className="game">
@@ -90,6 +105,7 @@ const Mastermind = () => {
                     colorOptions={colorOptions}
                     onNewGame={onNewGame}
                     onGiveUp={onGiveUp}
+                    time={time}
                     />
                     {/* guesses */}
                     {guesses.map((e, i)=> {
@@ -97,7 +113,9 @@ const Mastermind = () => {
                             <MMguess key={i}
                             colors={e.g}
                             result={e.r}
-                            colorOptions={colorOptions} />
+                            colorOptions={colorOptions}
+                            number={i + 1}
+                             />
                         )
                     })}
                     {/* new guess */}
