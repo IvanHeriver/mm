@@ -3,6 +3,9 @@ import "./Mastermind.css"
 import {randomGuess, checkGuess} from "./game_logic/utils";
 import {MMtoGuess, MMguessBuilder, MMguess} from "./MastermindComp";
 import "./MastermindComp.css";
+// import close_img from "./img/reset_img.svg"
+// import SelectBtn from "./customWidgets/select-btn"
+import MMconfig from "./MastermindConfig";
 
 const randomId = () => {
     return (
@@ -11,47 +14,37 @@ const randomId = () => {
     )
 }
 
+const allColors = [
+    "transparent",
+    "blue",
+    "green",
+    "yellow",
+    "red",
+    "black",
+    "white",
+    "violet",
+    "turquoise",
+]
 
 
 const Mastermind = () => {
+    // const [language, setLanguage] = useState("fr");
     const [gameDim, setGameDim] = useState({
         holes: 4,
         colors: 6,
     })
-    const [colorOptions, setColorOptions] = useState([
-        {
-        id: randomId(),
-        color: "transparent",
-        },
-        {
-        id: randomId(),
-        color: "blue",
-        },
-        {
-        id: randomId(),
-        color: "green",
-        },
-        {
-        id: randomId(),
-        color: "yellow",
-        },
-        {
-        id: randomId(),
-        color: "red",
-        },
-        {
-        id: randomId(),
-        color: "black",
-        },
-        {
-        id: randomId(),
-        color: "white",
-        },
-    ])
+    // console.log(allColors.slice(0, gameDim.colors+1))
+    const [colorOptions, setColorOptions] = useState(allColors.slice(0, gameDim.colors+1))
+    useEffect(()=>{
+        setColorOptions(allColors.slice(0, gameDim.colors+1))
+    }, [gameDim, setColorOptions])
+    
     const [toGuess, setToGuess] = useState(randomGuess(gameDim.holes, gameDim.colors))
     const [gameOver, setGameOver] = useState(false);
     const [guesses, setGuesses] = useState([]);
     const [currentGuess, setCurrentGuess] = useState(Array(gameDim.holes).fill(0))
+    const [configOpen, setConfigOpen] = useState(false)
+    const [clickSelectMode, setClickSelectMode] = useState(false)
     
     const [time, setTime] = useState(0);
     const [timer, setTimer] = useState(null);
@@ -92,20 +85,37 @@ const Mastermind = () => {
         })
     }
 
+    const onToggleConfig = (open=true) => {
+        console.log("opening config")
+        setConfigOpen(open);
+    }
+
     return (
         <div className="mm-app-container">
             {/* <div className="title">
                 MindMaster
             </div>           */}
             <div className="game-config-container">
+                {configOpen ? (
+                <MMconfig
+                    onCloseConfig={()=>onToggleConfig(false)}
+                    nHoles={gameDim.holes}
+                    onNumberOfHolesChange={(n)=>(setGameDim(gd=>({...gd, holes:n})))}
+                    nColors={gameDim.colors}
+                    onNumberOfColorsChange={(n)=>(setGameDim(gd=>({...gd, colors:n})))}
+                    clickSelectMode={clickSelectMode ? 1 : 0}
+                    onSelectModeChange={(c)=>(setClickSelectMode(c))}
+                />
+                 ) : (
                 <div className="game">
                     {/* to guess object */}
                     <MMtoGuess
-                    toGuess={gameOver ? toGuess : Array(toGuess.length).fill(0) }
-                    colorOptions={colorOptions}
-                    onNewGame={onNewGame}
-                    onGiveUp={onGiveUp}
-                    time={time}
+                        toGuess={gameOver ? toGuess : Array(toGuess.length).fill(0) }
+                        colorOptions={colorOptions}
+                        onNewGame={onNewGame}
+                        onGiveUp={onGiveUp}
+                        time={time}
+                        onOpenConfig={()=>{onToggleConfig(true)}}
                     />
                     {/* guesses */}
                     {guesses.map((e, i)=> {
@@ -124,13 +134,15 @@ const Mastermind = () => {
                         colors={currentGuess}
                         setColors={(c)=>{setCurrentGuess(c)}}
                         onSubmit={onSubmitGuess}
+                        clickSelectMode={clickSelectMode}
                     />}
                 </div>
+                )}
             </div>
-            
         </div>
     )
 }
+
 
 
 export default Mastermind;

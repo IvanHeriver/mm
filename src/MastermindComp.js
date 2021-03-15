@@ -1,32 +1,31 @@
 import { useEffect, useState } from "react"
-import play_img from "./img/play_img.svg"
-import reset_img from "./img/reset_img.svg"
-import restart_img from "./img/restart_img.svg"
-import show_img from "./img/show_img.svg"
-import timer_img from "./img/timer_img.svg"
-import notimer_img from "./img/notimer_img.svg"
+// import Select from "react-select"
+// import play_img from "./img/play_img.svg"
+// import reset_img from "./img/reset_img.svg"
+// import restart_img from "./img/restart_img.svg"
+// import show_img from "./img/show_img.svg"
+// import timer_img from "./img/timer_img.svg"
+// import notimer_img from "./img/notimer_img.svg"
+// import config_img from "./img/config_img.svg"
 
-const MMcolor = ({color}) => {
+const MMcolor = ({color, nomargin=false}) => {
     const bgColor = color === "transparent" ? "grey" : "transparent"
     return (
-        // colored div version
-        // <div className="one-color"
-        // style={{backgroundColor:color}}
-        // ></div>
-        // image version
         <button className="one-color-btn"
-        style={{backgroundColor:bgColor}}
+        style={{backgroundColor:bgColor, margin: nomargin ? "0" : "2px"}}
+
         >
         {
             color === "transparent" ? null :
-            <img src={process.env.PUBLIC_URL+"/"+color+"_pin.png"} className="one-color-img" draggable="false" width="40px" height="40px"/>
+            // <img src={process.env.PUBLIC_URL+"/"+color+"_pin.png"} className="one-color-img" draggable="false" width="40px" height="40px"/>
+            <img src={process.env.PUBLIC_URL+"/"+color+"_pin.png"} className="one-color-img" draggable="false"/>
         }
         </button>
     )
 }
 
 
-const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp, time}) => {
+const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp, time, onOpenConfig}) => {
     const [showTimer, setShowTimer] = useState(true);
     const formatTime = (t) => {
         // if (t === 0)  return "00:00"
@@ -40,41 +39,33 @@ const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp, time}) => {
         <div className="mm-toguess-container">
         <div className="one-color-row">
             <button onClick={onGiveUp}> 
-            <img src={show_img} className="btn-img" draggable="false"
-                style={{
-                    width: "90%",
-                    height: "90%",
-                    paddingLeft: "0px",
-                    paddingTop: "2px",
-                    
-                }}/>
+            {/* <img src={show_img} className="btn-img" draggable="false"/> */}
+            <img src={process.env.PUBLIC_URL+"/show_img.svg"} className="btn-img" draggable="false"/>
             </button>    
             <button onClick={onNewGame}>
-            <img src={restart_img} className="btn-img" draggable="false"
-                style={{
-                    width: "90%",
-                    height: "90%",
-                    paddingLeft: "0px",
-                    paddingTop: "2px"
-                }}/>
+            {/* <img src={restart_img} className="btn-img" draggable="false"/> */}
+            <img src={process.env.PUBLIC_URL+"/restart_img.svg"} className="btn-img" draggable="false"/>
             </button>    
             {
                 showTimer ? <div className="mm-timer"><div>{formatTime(time)}</div></div> : null
             }
             <button onClick={()=>setShowTimer(t=>!t)}>
-                <img src={showTimer ? notimer_img : timer_img} className="btn-img" draggable="false"
-                style={{
-                    width: "100%",
-                    height: "100%",
-                }}
-                />
+                {/* <img src={showTimer ? notimer_img : timer_img} className="btn-img" draggable="false"/> */}
+                <img src={showTimer ? (
+                    process.env.PUBLIC_URL+"/notimer_img.svg" 
+                    ): ( process.env.PUBLIC_URL+"/timer_img.svg" 
+                    )} className="btn-img" draggable="false"/>
+            </button>
+            <button onClick={()=>onOpenConfig()}>
+                {/* <img src={config_img} className="btn-img" draggable="false"/> */}
+                <img src={process.env.PUBLIC_URL+"/config_img.svg"} className="btn-img" draggable="false"/>
             </button>
         </div>
         <div className="one-color-row mm-rounded-border">
             {
                 toGuess.map((e, i)=> {
                     return (
-                        <MMcolor key={i} color={colorOptions[e].color}/>
+                        <MMcolor key={i} color={colorOptions[e]}/>
                     )
                 })
             }
@@ -83,8 +74,80 @@ const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp, time}) => {
     )
 }
 
-const MMcolorEditor = ({colorOptions, color, setColor}) => {
-    // const [tmpColor, setTmpColor] = useState(0);
+const MMcolorEditor = ({colorOptions, color, setColor, clickMode=false}) => {
+    return (
+        clickMode ? (
+            <MMcolorEditor_click colorOptions={colorOptions} color={color} setColor={setColor} /> 
+        ):(
+            <MMcolorEditor_drag colorOptions={colorOptions} color={color} setColor={setColor} /> 
+        ) 
+    )
+}
+
+const MMcolorEditor_click = ({colorOptions, color, setColor}) => {
+    const [editOn, setEditOn] = useState(false);
+    useEffect(()=> {
+        const listenerAction = (e) => {
+            setEditOn(false);
+        }
+        window.addEventListener("click", listenerAction)
+        return (
+            () => {
+                window.removeEventListener("click", listenerAction)
+            }
+        )
+    }, [setEditOn])
+    const getElemIdFromMouseEvent = (event) => {
+        const elem = document.elementFromPoint(
+            event.clientX,
+            event.clientY
+        )
+        if (!elem) return null
+        if (!elem.parentElement.parentElement.getAttribute("idkey")) return null
+        return(parseInt(elem.parentElement.parentElement.getAttribute("idkey")))
+    }
+    return (
+        <div className="mm-editable-color" 
+            onClick={(e)=> {
+                console.log(editOn)
+                if (editOn) {
+                    console.log("here")
+                    const id = getElemIdFromMouseEvent(e)
+                    console.log(id)
+                    if (id) setColor(id)
+                    setEditOn(false)
+                } else {
+                    setTimeout(()=>setEditOn(true), 0)
+                }
+            }}
+        >
+            <MMcolor color={colorOptions[color]} />
+            { editOn ? (
+                <div className="mm-color-options" style={{['--m']: colorOptions.length-1, ['--tan']: 0.40}}>
+                {
+                    colorOptions.map((e, i) => {
+                        if (i === 0) {
+                            return (null)
+                        }
+                        return (
+                            <div key={i}
+                            idkey={i}
+                            style={{['--i']: i+1}}
+                            >
+                                <MMcolor color={e} nomargin={true}/>
+                            </div>
+                        )
+                    })
+                }
+                </div>
+            ):(
+                null
+            )}
+        </div>
+    )
+}
+
+const MMcolorEditor_drag = ({colorOptions, color, setColor}) => {
     const [editOn, setEditOn] = useState(false);
     useEffect(()=> {
         const listenerAction = (e) => {
@@ -115,33 +178,25 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
         if (!elem.parentElement.parentElement.getAttribute("idkey")) return null
         return(parseInt(elem.parentElement.parentElement.getAttribute("idkey")))
     }
+    // console.log(colorOptions)
     return (
         <div className="mm-editable-color" 
             onTouchStart={()=> {
                 setEditOn(true)
-                // setTmpColor(color)
             }}
             onMouseDown={()=> {
                 setEditOn(true)
-                // setTmpColor(color)
             }}
             onTouchMove={(e)=> {
                 const id = getElemIdFromTouchEvent(e)
-                // id ? setColor(id) : setColor(tmpColor)
                 if (id) setColor(id) 
             }}
             onMouseMove={(e)=>{
                 if (editOn) {
                     const id = getElemIdFromMouseEvent(e)
-                    // id ? setColor(id) : setColor(tmpColor)
                     if (id) setColor(id) 
                 }
             }}
-            // onMouseLeave={(e)=>{
-            //     if (editOn) {
-            //         setColor(tmpColor)
-            //     }
-            // }}
             onTouchEnd={(e)=> {
                 const id = getElemIdFromTouchEvent(e)
                 if (id) setColor(id)
@@ -153,9 +208,9 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
                 if (id) setColor(id)
             }}
         >
-            <MMcolor color={colorOptions[color].color} />
+            <MMcolor color={colorOptions[color]} />
             { editOn ? (
-                <div className="mm-color-options" style={{['--m']: 6, ['--tan']: 0.41}}>
+                <div className="mm-color-options" style={{['--m']: colorOptions.length-1, ['--tan']: 0.40}}>
                 {
                     colorOptions.map((e, i) => {
                         if (i === 0) {
@@ -166,7 +221,7 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
                             idkey={i}
                             style={{['--i']: i+1}}
                             >
-                                <MMcolor color={e.color} />
+                                <MMcolor color={e} nomargin={true} />
                             </div>
                         )
                     })
@@ -179,25 +234,7 @@ const MMcolorEditor = ({colorOptions, color, setColor}) => {
     )
 }
 
-const MMcolorOptions = ({colorOptions}) => {
-    return (
-        colorOptions.map((e, i) => {
-            if (i === 0) {
-                return (null)
-            }
-            return (
-                <div key={i}
-                idkey={i}
-                >
-                    <MMcolor color={e.color} />
-                </div>
-            )
-        })
-    )
-}
-
-const MMguessBuilder = ({colorOptions, colors, setColors, onSubmit}) => {
-    // const [isEditorOpen, setIsEditorOpen] = useState(Array(colors.length).fill(0));
+const MMguessBuilder = ({colorOptions, colors, setColors, onSubmit, clickSelectMode=false}) => {
     const [isValid, setIsValid] = useState(false);
     useEffect(()=> {
         setIsValid(colors.map((e)=>e!=0).reduce((p, c)=>p && c))
@@ -211,26 +248,14 @@ const MMguessBuilder = ({colorOptions, colors, setColors, onSubmit}) => {
                 <button onClick={()=>{onSubmit(colors)}}
                     disabled={!isValid}
                 > 
-                    <img src={play_img} className="btn-img" draggable="false"
-                    style={{
-                        width: "90%",
-                        height: "90%",
-                        paddingLeft: "5px",
-                        paddingTop: "4px"
-                    }}/>
+                    <img src={process.env.PUBLIC_URL+"/play_img.svg"} className="btn-img" draggable="false"/>
                 </button>  
             </div>
             <div className="mm-ingame-btns-left">
                 <button
                     onClick={onReset}
                 > 
-                    <img src={reset_img} className="btn-img" draggable="false"
-                    style={{
-                        width: "90%",
-                        height: "90%",
-                        paddingLeft: "0px",
-                        paddingTop: "5px"
-                    }}/>
+                    <img src={process.env.PUBLIC_URL+"/reset_img.svg"} className="btn-img" draggable="false"/>
                 </button>  
             </div>
             {
@@ -244,6 +269,7 @@ const MMguessBuilder = ({colorOptions, colors, setColors, onSubmit}) => {
                             nC[i] = c
                             setColors(nC)
                         }}
+                        clickMode={clickSelectMode}
                         />
                     )
                 })
@@ -288,11 +314,13 @@ const MMguess = ({colors, result, colorOptions, number}) => {
                 colors.map((e, i) => {
                     return (
                         <MMcolor key={i}
-                        color={colorOptions[e].color} />
+                        color={colorOptions[e]} />
                     )
                 })
             }
         </div>
     )
 }
+
+
 export {MMtoGuess, MMguessBuilder, MMguess};

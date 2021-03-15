@@ -1,6 +1,6 @@
 :root {
     --topcolor:rgb(216, 216, 216);
-    --botcolor:rgb(219, 219, 219);
+    --botcolor:rgb(241, 241, 241);
     --strcolor: rgb(148, 123, 123);
     --midcolor: rgb(196, 164, 164);
     --ligcolor: rgb(229, 190, 190);
@@ -72,3 +72,6 @@ button:hover {
         float: right;
     }
 } */
+
+
+/* config panel */

@@ -1,7 +1,11 @@
+:root {
+    --refwidth: 40px;
+}
+
 /* in game buttons */
 .game button {
-    height: 40px;
-    width: 40px;
+    height: var(--refwidth);
+    width: var(--refwidth);
 }
 
 .btn-img {
@@ -10,6 +14,8 @@
     -moz-user-select: none;
     -o-user-select: none;
     user-select: none;
+    min-width: 100%;
+    max-height: 100%;
 }
 
 /* positionning of main game elements */
@@ -39,7 +45,7 @@
 
 .mm-rounded-border {
     border: 1px solid var(--strcolor);
-    border-radius: 40px;
+    border-radius: var(--refwidth);
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -56,16 +62,21 @@
 }
 .one-color-btn {
     margin: 2px;
+    /* margin: 0; */
     padding: 0;
+    width: var(--refwidth);
+    height: var(--refwidth);
     border: none;
     cursor:default;
 }
 .one-color-btn:hover {
     border: none;
 }
-.one-color-image {
+.one-color-img {
     margin: 0;
     padding: 0;
+    max-width: 100%;
+    max-height: 100%;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -83,17 +94,17 @@
 }
 .mm-color-options {
     /* amazing solution from : https://stackoverflow.com/a/12817454 */
-    --d: 40px; /* image size */
-    --rel: 0; /* how much extra space we want between images, 1 = one image size */
+    --d: var(--refwidth); /* image size */
+    --rel: 0.1; /* how much extra space we want between images, 1 = one image size */
     --r: calc(.5*(1 + var(--rel))*var(--d)/var(--tan)); /* circle radius */
     --s: calc(2*var(--r) + var(--d)); /* container size */
     position: absolute;
     width: var(--s); 
     height: var(--s);
 
-    border: 60px solid var(--ligcolor);
+    border: calc(var(--refwidth) * 1.5) solid var(--ligcolor);
     border-radius: calc(var(--r)*2);
-    padding: 20px;
+    padding: calc(var(--refwidth) / 2 - 1px);
 
     top: 50%;
     left: 50%;
@@ -117,16 +128,20 @@
 .mm-result {
     display: flex;
     flex-direction: row;
+    justify-content: flex-end;
     flex-wrap: wrap;
     position: absolute;
     left: 0;
     top: 50%;
     transform: translate(-100%, -50%);
+    /* width: 80px; */
+    /* border: 1px solid red; */
+    padding-right: 5px;
 }
 .mm-res-pin {
-    width: 15px;
-    height: 15px;
-    border-radius: 8px;
+    width: calc(var(--refwidth) / 3);
+    height: calc(var(--refwidth) / 3);
+    border-radius: calc(var(--refwidth) / 3);
     margin: 2px;
     border: 1px solid transparent;
 }
@@ -151,8 +166,8 @@
 .mm-number {
     font-size: 1.3rem;
     font-weight: bold;
-    height: 40px;
-    width: 40px;
+    height: var(--refwidth);
+    width: var(--refwidth);
     padding: 5px;
     margin: 5px;
     text-align: center;
