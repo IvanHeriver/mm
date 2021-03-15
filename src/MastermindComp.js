@@ -38,28 +38,41 @@ const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp, time, onOpenConf
     return (
         <div className="mm-toguess-container">
         <div className="one-color-row">
-            <button onClick={onGiveUp}> 
-            {/* <img src={show_img} className="btn-img" draggable="false"/> */}
-            <img src={process.env.PUBLIC_URL+"/show_img.svg"} className="btn-img" draggable="false"/>
+            <button onClick={()=>{
+                const r = document.querySelector(":root");
+                let v = parseInt(window.getComputedStyle(r).getPropertyValue('--refwidth'));
+                if (v > 25) v--;
+                console.log(v);
+                r.style.setProperty("--refwidth", v+"px");
+            }}> 
+                <img src={process.env.PUBLIC_URL+"/zoomout_img.svg"} className="btn-img" draggable="false"/>
             </button>    
+            <button onClick={onGiveUp}> 
+                <img src={process.env.PUBLIC_URL+"/show_img.svg"} className="btn-img" draggable="false"/>
+            </button>
             <button onClick={onNewGame}>
-            {/* <img src={restart_img} className="btn-img" draggable="false"/> */}
             <img src={process.env.PUBLIC_URL+"/restart_img.svg"} className="btn-img" draggable="false"/>
             </button>    
             {
                 showTimer ? <div className="mm-timer"><div>{formatTime(time)}</div></div> : null
             }
             <button onClick={()=>setShowTimer(t=>!t)}>
-                {/* <img src={showTimer ? notimer_img : timer_img} className="btn-img" draggable="false"/> */}
                 <img src={showTimer ? (
                     process.env.PUBLIC_URL+"/notimer_img.svg" 
                     ): ( process.env.PUBLIC_URL+"/timer_img.svg" 
                     )} className="btn-img" draggable="false"/>
             </button>
             <button onClick={()=>onOpenConfig()}>
-                {/* <img src={config_img} className="btn-img" draggable="false"/> */}
                 <img src={process.env.PUBLIC_URL+"/config_img.svg"} className="btn-img" draggable="false"/>
             </button>
+            <button onClick={()=>{
+                const r = document.querySelector(":root");
+                let v = parseInt(window.getComputedStyle(r).getPropertyValue('--refwidth'));
+                if (v < 50) v++;
+                r.style.setProperty("--refwidth", v+"px");
+            }}> 
+                <img src={process.env.PUBLIC_URL+"/zoomin_img.svg"} className="btn-img" draggable="false"/>
+            </button> 
         </div>
         <div className="one-color-row mm-rounded-border">
             {
