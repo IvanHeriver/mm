@@ -307,9 +307,9 @@ const MMguessRes = ({gcgp, gcbp}) => {
 
 const MMguess = ({colors, result, colorOptions, number}) => {
     return (
+        <div className="one-row">
+        <MMguessRes gcgp={result.gcgp} gcbp={result.gcbp} />
         <div className="one-color-row">
-            <div className="mm-ingame-btns-right"><div className="mm-number">{number}</div></div>
-            <MMguessRes gcgp={result.gcgp} gcbp={result.gcbp} />
             {
                 colors.map((e, i) => {
                     return (
@@ -318,6 +318,8 @@ const MMguess = ({colors, result, colorOptions, number}) => {
                     )
                 })
             }
+        </div>
+        <div className="mm-number"><p>{number}</p></div>
         </div>
     )
 }
