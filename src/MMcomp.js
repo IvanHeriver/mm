@@ -30,7 +30,7 @@ const MMtoGuess = ({toGuess, colorOptions, time, timerVisible}) => {
     return (
         <div className="mm-toguess mm-row">
             <div className="mm-left"></div>
-            <div className="mm-timer mm-right">
+            <div className="mm-txt mm-right">
                 {timerVisible ? <div>{formatTime(time)}</div> : null}
             </div>
         <div className="mm-center">
@@ -260,7 +260,7 @@ const MMguess = ({colors, result, colorOptions, number}) => {
                 })
             }
         </div>
-        <div className="mm-number mm-right">
+        <div className="mm-txt mm-right">
             <p>{number}</p>
         </div>
         </div>
