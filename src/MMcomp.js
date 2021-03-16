@@ -29,24 +29,6 @@ const MMtoGuess = ({toGuess, colorOptions, time, timerVisible}) => {
     console.log(timerVisible)
     return (
         <div className="mm-toguess-container">
-        {/* <div className="one-color-row">
-            <button onClick={onGiveUp}> 
-            <img src={process.env.PUBLIC_URL+"/show_img.svg"} className="btn-img" draggable="false"/>
-            </button>    
-            <button onClick={onNewGame}>
-            <img src={process.env.PUBLIC_URL+"/restart_img.svg"} className="btn-img" draggable="false"/>
-            </button>    
-
-            <button onClick={()=>setShowTimer(t=>!t)}>
-                <img src={showTimer ? (
-                    process.env.PUBLIC_URL+"/notimer_img.svg" 
-                    ): ( process.env.PUBLIC_URL+"/timer_img.svg" 
-                    )} className="btn-img" draggable="false"/>
-            </button>
-            <button onClick={()=>onOpenConfig()}>
-                <img src={process.env.PUBLIC_URL+"/config_img.svg"} className="btn-img" draggable="false"/>
-            </button>
-        </div> */}
         {
                 timerVisible ? <div className="mm-timer"><div>{formatTime(time)}</div></div> : null
         }

@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from "react";
-import "./Mastermind.css"
+// import "./Mastermind.css"
 import {randomGuess, checkGuess} from "./game_logic/utils";
-import {MMtoGuess, MMguessBuilder, MMguess} from "./MastermindComp";
+import {MMtoGuess, MMguessBuilder, MMguess} from "./MMcomp";
 import "./MastermindComp.css";
 // import close_img from "./img/reset_img.svg"
 // import SelectBtn from "./customWidgets/select-btn"
-import {MMconfig, MMbuttons} from "./MastermindConfig";
+import {MMconfig, MMbuttons} from "./MMcfg";
 
 const randomId = () => {
     return (
@@ -27,7 +27,7 @@ const allColors = [
 ]
 
 
-const Mastermind = () => {
+const MM = () => {
     // const [language, setLanguage] = useState("fr");
     const [gameDim, setGameDim] = useState({
         holes: 4,
@@ -155,4 +155,4 @@ const Mastermind = () => {
 
 
 
-export default Mastermind;
+export default MM;

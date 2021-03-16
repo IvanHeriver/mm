@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Mastermind from './Mastermind'
+import MM from './MM'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Mastermind />
+    <MM />
   </React.StrictMode>
   , 
   document.getElementById("root")
