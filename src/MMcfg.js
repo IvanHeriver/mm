@@ -1,10 +1,10 @@
 import SelectBtn from "./customWidgets/select-btn"
 import React from "react";
-import "./MastermindConfig.css"
+// import "./MM.css"
 
 const MMbuttons = ({onNewGame, onGiveUp, onOpenConfig}) => {
     return (
-        <>
+        <div className="mm-buttons">
         <button onClick={onGiveUp}> 
             <img src={process.env.PUBLIC_URL+"/show_img.svg"} className="btn-img" draggable="false"/>
             </button>    
@@ -14,7 +14,7 @@ const MMbuttons = ({onNewGame, onGiveUp, onOpenConfig}) => {
             <button onClick={()=>onOpenConfig()}>
                 <img src={process.env.PUBLIC_URL+"/config_img.svg"} className="btn-img" draggable="false"/>
             </button>
-        </>
+        </div>
     )
 }
 
