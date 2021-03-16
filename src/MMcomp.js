@@ -3,8 +3,8 @@ import { useEffect, useState } from "react"
 const MMcolor = ({color, nomargin=false}) => {
     const bgColor = color === "transparent" ? "grey" : "transparent"
     return (
-        <button className="one-color-btn"
-        style={{backgroundColor:bgColor, margin: nomargin ? "0" : "2px"}}
+        <button className="mm-color"
+        // style={{backgroundColor:bgColor, margin: nomargin ? "0" : "2px"}}
 
         >
         {
@@ -25,14 +25,15 @@ const MMtoGuess = ({toGuess, colorOptions, time, timerVisible}) => {
         if (s < 10) s = "0"+s
         return m+":"+s
     }
-    console.log(time)
-    console.log(timerVisible)
+    // console.log(time)
+    // console.log(timerVisible)
     return (
-        <div className="mm-toguess-container">
-        {
-                timerVisible ? <div className="mm-timer"><div>{formatTime(time)}</div></div> : null
-        }
-        <div className="one-color-row mm-rounded-border">
+        <div className="mm-toguess mm-row">
+            <div className="mm-left"></div>
+            <div className="mm-timer mm-right">
+                {timerVisible ? <div>{formatTime(time)}</div> : null}
+            </div>
+        <div className="mm-center">
             {
                 toGuess.map((e, i)=> {
                     return (
@@ -46,88 +47,72 @@ const MMtoGuess = ({toGuess, colorOptions, time, timerVisible}) => {
 }
 
 const MMcolorEditor = ({colorOptions, color, setColor, clickMode=false}) => {
-    return (
-        clickMode ? (
-            <MMcolorEditor_click colorOptions={colorOptions} color={color} setColor={setColor} /> 
-        ):(
-            <MMcolorEditor_drag colorOptions={colorOptions} color={color} setColor={setColor} /> 
-        ) 
-    )
-}
-
-const MMcolorEditor_click = ({colorOptions, color, setColor}) => {
     const [editOn, setEditOn] = useState(false);
-    useEffect(()=> {
-        const listenerAction = (e) => {
-            setEditOn(false);
-        }
-        window.addEventListener("click", listenerAction)
-        return (
-            () => {
-                window.removeEventListener("click", listenerAction)
+    let windowEventName = "";
+    let onTouchStart = () => {};
+    let onMouseDown = () => {};
+    let onTouchMove = () => {};
+    let onMouseMove = () => {};
+    let onTouchEnd = () => {};
+    let onMouseUp = () => {};
+    let onClick = () => {};
+
+    if (clickMode) {
+        onClick = (e)=> {
+            if (editOn) {
+                console.log("here")
+                const id = getElemIdFromMouseEvent(e)
+                console.log(id)
+                if (id) setColor(id)
+                setEditOn(false)
+            } else {
+                setTimeout(()=>setEditOn(true), 0)
             }
-        )
-    }, [setEditOn])
-    const getElemIdFromMouseEvent = (event) => {
-        const elem = document.elementFromPoint(
-            event.clientX,
-            event.clientY
-        )
-        if (!elem) return null
-        if (!elem.parentElement.parentElement.getAttribute("idkey")) return null
-        return(parseInt(elem.parentElement.parentElement.getAttribute("idkey")))
+        }
+        // onMouseDown = () => {
+        //     window.scrollTo(100000, 100000)
+        // }
+        windowEventName = "click"
+    } else {
+        onTouchStart = () => {
+            setEditOn(true)
+            // window.scrollTo(100000, 100000)
+        }
+        onMouseDown = () => {
+            setEditOn(true)
+            // console.log("scrolling")
+            // window.scrollTo(100000, 100000)
+        }
+        onTouchMove = (e) => {
+            const id = getElemIdFromTouchEvent(e)
+            if (id) setColor(id) 
+        }
+        onMouseMove = (e) => {
+            if (editOn) {
+                const id = getElemIdFromMouseEvent(e)
+                if (id) setColor(id) 
+            }
+        }
+        onTouchEnd = (e)=> {
+            const id = getElemIdFromTouchEvent(e)
+            if (id) setColor(id)
+            setEditOn(false)
+        }
+        onMouseUp = (e)=> {
+            const id = getElemIdFromMouseEvent(e)
+            if (id) setColor(id)
+        }
+        windowEventName = "mouseup"
     }
-    return (
-        <div className="mm-editable-color" 
-            onClick={(e)=> {
-                console.log(editOn)
-                if (editOn) {
-                    console.log("here")
-                    const id = getElemIdFromMouseEvent(e)
-                    console.log(id)
-                    if (id) setColor(id)
-                    setEditOn(false)
-                } else {
-                    setTimeout(()=>setEditOn(true), 0)
-                }
-            }}
-        >
-            <MMcolor color={colorOptions[color]} />
-            { editOn ? (
-                <div className="mm-color-options" style={{['--m']: colorOptions.length-1, ['--tan']: 0.40}}>
-                {
-                    colorOptions.map((e, i) => {
-                        if (i === 0) {
-                            return (null)
-                        }
-                        return (
-                            <div key={i}
-                            idkey={i}
-                            style={{['--i']: i+1}}
-                            >
-                                <MMcolor color={e} nomargin={true}/>
-                            </div>
-                        )
-                    })
-                }
-                </div>
-            ):(
-                null
-            )}
-        </div>
-    )
-}
-
-const MMcolorEditor_drag = ({colorOptions, color, setColor}) => {
-    const [editOn, setEditOn] = useState(false);
-    useEffect(()=> {
+    
+     useEffect(()=> {
         const listenerAction = (e) => {
             setEditOn(false);
         }
-        window.addEventListener("mouseup", listenerAction)
+        window.addEventListener(windowEventName, listenerAction)
         return (
             () => {
-                window.removeEventListener("mouseup", listenerAction)
+                window.removeEventListener(windowEventName, listenerAction)
             }
         )
     }, [setEditOn])
@@ -149,39 +134,20 @@ const MMcolorEditor_drag = ({colorOptions, color, setColor}) => {
         if (!elem.parentElement.parentElement.getAttribute("idkey")) return null
         return(parseInt(elem.parentElement.parentElement.getAttribute("idkey")))
     }
-    // console.log(colorOptions)
-    return (
-        <div className="mm-editable-color" 
-            onTouchStart={()=> {
-                setEditOn(true)
-            }}
-            onMouseDown={()=> {
-                setEditOn(true)
-            }}
-            onTouchMove={(e)=> {
-                const id = getElemIdFromTouchEvent(e)
-                if (id) setColor(id) 
-            }}
-            onMouseMove={(e)=>{
-                if (editOn) {
-                    const id = getElemIdFromMouseEvent(e)
-                    if (id) setColor(id) 
-                }
-            }}
-            onTouchEnd={(e)=> {
-                const id = getElemIdFromTouchEvent(e)
-                if (id) setColor(id)
-                setEditOn(false)
 
-            }}
-            onMouseUp={(e)=> {
-                const id = getElemIdFromMouseEvent(e)
-                if (id) setColor(id)
-            }}
+    return (
+        <div className="mm-editable-colors" 
+            onTouchStart={onTouchStart}
+            onMouseDown={onMouseDown}
+            onTouchMove={onTouchMove}
+            onMouseMove={onMouseMove}
+            onTouchEnd={onTouchEnd}
+            onMouseUp={onMouseUp}
+            onClick={onClick}
         >
             <MMcolor color={colorOptions[color]} />
             { editOn ? (
-                <div className="mm-color-options" style={{['--m']: colorOptions.length-1, ['--tan']: 0.40}}>
+                <div className="mm-color-picker" style={{['--m']: colorOptions.length-1, ['--tan']: 0.40}}>
                 {
                     colorOptions.map((e, i) => {
                         if (i === 0) {
@@ -214,57 +180,59 @@ const MMguessBuilder = ({colorOptions, colors, setColors, onSubmit, clickSelectM
         setColors(Array(colors.length).fill(0))
     }
     return (
-        <div className="one-color-row">
-            <div className="mm-ingame-btns-right">
+        <div className="mm-guessbuilder mm-row">
+            <div className="mm-right">
                 <button onClick={()=>{onSubmit(colors)}}
                     disabled={!isValid}
                 > 
                     <img src={process.env.PUBLIC_URL+"/play_img.svg"} className="btn-img" draggable="false"/>
                 </button>  
             </div>
-            <div className="mm-ingame-btns-left">
+            <div className="mm-left">
                 <button
                     onClick={onReset}
                 > 
                     <img src={process.env.PUBLIC_URL+"/reset_img.svg"} className="btn-img" draggable="false"/>
                 </button>  
             </div>
-            {
-                colors.map((e, i)=> {
-                    return (
-                        <MMcolorEditor key={i}
-                        colorOptions={colorOptions}
-                        color={e}
-                        setColor={(c) => {
-                            const nC = [...colors]
-                            nC[i] = c
-                            setColors(nC)
-                        }}
-                        clickMode={clickSelectMode}
-                        />
-                    )
-                })
-            }
+            <div className="mm-center">
+                {
+                    colors.map((e, i)=> {
+                        return (
+                            <MMcolorEditor key={i}
+                            colorOptions={colorOptions}
+                            color={e}
+                            setColor={(c) => {
+                                const nC = [...colors]
+                                nC[i] = c
+                                setColors(nC)
+                            }}
+                            clickMode={clickSelectMode}
+                            />
+                        )
+                    })
+                }
+            </div>
         </div>
     )
 }
 
 const MMguessResPin = ({type}) => {
     return (
-        <div className={"mm-res-pin " + type}>
+        <div className={"mm-res " + type}>
         </div>
     )
 }
 const MMguessRes = ({gcgp, gcbp}) => {
     const pins = [];
     for (let k = 0; k < gcgp; k++) {
-        pins.push("gcgp")
+        pins.push("mm-gp")
     }
     for (let k = 0; k < gcbp; k++) {
-        pins.push("gcbp")
+        pins.push("mm-bp")
     }
     return (
-        <div className="mm-result">
+        <div className="mm-results">
             {
                 pins.map((e,i) => {
                     return (
@@ -278,9 +246,11 @@ const MMguessRes = ({gcgp, gcbp}) => {
 
 const MMguess = ({colors, result, colorOptions, number}) => {
     return (
-        <div className="one-row">
-        <MMguessRes gcgp={result.gcgp} gcbp={result.gcbp} />
-        <div className="one-color-row">
+        <div className="mm-guess mm-row">
+        <div className="mm-left">
+            <MMguessRes gcgp={result.gcgp} gcbp={result.gcbp} />
+        </div>
+        <div className="mm-center">
             {
                 colors.map((e, i) => {
                     return (
@@ -290,7 +260,9 @@ const MMguess = ({colors, result, colorOptions, number}) => {
                 })
             }
         </div>
-        <div className="mm-number"><p>{number}</p></div>
+        <div className="mm-number mm-right">
+            <p>{number}</p>
+        </div>
         </div>
     )
 }
