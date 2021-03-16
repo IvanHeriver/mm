@@ -32,7 +32,16 @@ const MM = () => {
         setColorOptions(allColors.slice(0, gameDim.colors+1))
         updateGameLayout();
     }, [gameDim, setColorOptions])
-
+    const onResize = () => {
+        updateGameLayout()
+    }
+    useEffect(()=>{
+        window.addEventListener("resize", onResize)
+        return (()=>{
+            window.removeEventListener("resize", onResize)
+        }
+        )
+    })
     const [toGuess, setToGuess] = useState(randomGuess(gameDim.holes, gameDim.colors))
     const [gameOver, setGameOver] = useState(false);
     const [guesses, setGuesses] = useState([]);
@@ -48,11 +57,13 @@ const MM = () => {
         setTime(0);
     }
     const startTimer = () => {
+        console.log("starting timer")
         setTimer(setInterval(()=>{
             setTime(t=>t+1)
         }, 1000))
     }
     const stopTimer = () => {
+        console.log("stopping timer")
         clearInterval(timer)
     }
 
@@ -85,19 +96,16 @@ const MM = () => {
         console.log("opening config")
         setConfigOpen(open);
     }
-    window.addEventListener("resize", ()=>updateGameLayout())
+    
     const updateGameLayout = () => {
         const r = document.querySelector(":root");
-        // let v = parseInt(window.getComputedStyle(r).getPropertyValue('--refwidth'));
-        // if (v > 25) v--;
-        // console.log(v);
         const n = gameDim.holes;
         // const W = 40;
         // const w = W / 2;
         const M = 2;
         // const T = (n * (W + 2*M)) + (n * (W / 2 + 2*M)) + (2 * (W + M) );
         // const T = W * (n+n/2+2) + M * (4*n + 2) + 4;
-        const T = document.body.clientWidth; 
+        const T = document.body.clientWidth - 40; 
         const nW = (T - 4 - M * (4*n + 2)) / (n + n/3 + 2)
         const W = Math.min(nW, 40);
         // nW+2nM + 1/2nW + 2nM + 2W + 2M
