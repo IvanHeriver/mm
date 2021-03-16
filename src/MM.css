@@ -112,15 +112,9 @@ app layout
     display: flex;
     justify-content: center;
 }
-.mm-toguess {
-    /* background-color: yellowgreen; */
-}
 .mm-toguess .mm-center {
     border: 1px solid var(--strong-col);
     border-radius: var(--main-size);
-}
-.mm-guess {
-    /* background-color: orange; */
 }
 .mm-guessbuilder {
     /* background-color: palegreen; */
