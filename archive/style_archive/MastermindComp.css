@@ -19,7 +19,14 @@
 }
 
 /* positionning of main game elements */
-.mm-ingame-btns-left {
+
+.one-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+/* .mm-ingame-btns-left {
     position: absolute;
     left: 0;
     top: 50%;
@@ -32,15 +39,15 @@
     transform: translate(100%, -50%);
     display: flex;
     justify-content: center;
-}
+} */
 .one-color-row {
     display: flex;
     flex-direction: row;
     justify-content: center;
     padding: 5px;
     position: relative;
-    margin-left: auto;
-    margin-right: auto;
+    /* margin-left: auto;
+    margin-right: auto; */
 }
 
 .mm-rounded-border {
@@ -54,7 +61,10 @@
     display: flex;
     flex-direction: column;
     align-content: center;
+    margin-left: auto;
+    margin-right: auto;
 }
+
 /* the colored pin formatting */
 .one-color {
     margin: 2px;
@@ -129,13 +139,15 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    align-content: center;
     flex-wrap: wrap;
-    position: absolute;
+    /* position: absolute;
     left: 0;
     top: 50%;
-    transform: translate(-100%, -50%);
+    transform: translate(-100%, -50%); */
     /* width: 80px; */
     /* border: 1px solid red; */
+    width: calc(var(--refwidth) * 2);
     padding-right: 5px;
 }
 .mm-res-pin {
@@ -166,9 +178,20 @@
 .mm-number {
     font-size: 1.3rem;
     font-weight: bold;
-    height: var(--refwidth);
-    width: var(--refwidth);
+    /* height: var(--refwidth);
+    width: var(--refwidth); */
+    /* padding: 5px;
+    margin: 5px; */
+    /* margin: auto; */
+    /* text-align: center;
+    display: flex;
+    flex-direction: row; */
+    /* justify-content: center; */
+    /* align-content: ; */
     padding: 5px;
-    margin: 5px;
-    text-align: center;
+    width: calc(var(--refwidth) * 2);
 }
+
+/* .mm-number p {
+
+} */

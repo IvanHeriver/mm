@@ -1,0 +1,256 @@
+
+:root {
+    --strong-col: rgb(143, 6, 6);
+    --mid-col: rgb(206, 151, 151);
+    --light-col: rgb(241, 201, 201);
+    --main-size: 40px;
+    --secondary-size: 20px;
+    --n-elements: 4; /* the number of element within a row*/
+    /* --center-size: calc(var(--n-elements) * (var(--main-size)+4));
+    --left-size: calc(var(--n-elements) * (var(--secondary-size)+2)); */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+body {
+    background-color: rgb(255, 240, 240);
+}
+
+
+button {
+    background-color: var(--light-col);
+    border: 1px solid var(--strong-col);
+    border-radius: var(--main-size);
+    width: var(--main-size);
+    height: var(--main-size);
+    margin: 2px;
+    position: relative
+}
+
+button img {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    min-width: 80%;
+    max-height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* ***********************************
+color buttons
+*********************************** */
+
+button.mm-color {
+    background-color: rgb(211, 211, 211);
+    border: none;
+    position: relative;
+    
+}
+
+button.mm-color img {
+    min-width: 100%;
+    max-height: 100%;
+}
+
+
+/* ***********************************
+result pins + text
+*********************************** */
+
+.mm-results {
+    display: flex;
+    align-items: center;
+}
+.mm-res {
+    width: var(--secondary-size);
+    height: var(--secondary-size);
+    border-radius: var(--secondary-size);
+    border: 1px solid black;
+    margin: 2px;
+}
+.mm-gp {
+    background-color: black;
+}
+.mm-bp {
+    background-color: white;
+}
+
+.mm-txt {
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+/* ***********************************
+app layout
+*********************************** */
+
+.mm-container {
+    position: relative;
+    min-height: 100vh;
+    /* background-color: wheat; */
+}
+
+.mm-game {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* background-color: violet; */
+}
+
+.mm-buttons {
+    /* background-color: yellow; */
+    display: flex;
+    justify-content: center;
+}
+.mm-toguess {
+    /* background-color: yellowgreen; */
+}
+.mm-toguess .mm-center {
+    border: 1px solid var(--strong-col);
+    border-radius: var(--main-size);
+}
+.mm-guess {
+    /* background-color: orange; */
+}
+.mm-guessbuilder {
+    /* background-color: palegreen; */
+    margin-bottom: calc(var(--main-size) * 2);
+}
+
+.mm-row {
+    margin-left: auto;
+    margin-right:auto;
+    /* contains the grid used for all components */
+    display: grid;
+    grid-template-columns: var(--left-size) var(--center-size) var(--right-size);;
+    grid-template-areas:
+        "left center right"
+    ;
+    padding: 2px;
+}
+
+.mm-left {
+    grid-area: left;
+    /* background-color: red; */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    /* width: 100px; */
+}
+.mm-center {
+    grid-area: center;
+    /* min-width: calc(8 * var(--main-size)); */
+    display: flex;
+    justify-content: center;
+    /* width: var(--center-size); */
+    /* width: 340px; */
+}
+.mm-right {
+    grid-area: right;
+    /* background-color: red; */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    /* width: calc(2 * var(--main-size)) */
+}
+
+/* .mm-row-center {
+    
+} */
+
+/* ***********************************
+color picker magic
+*********************************** */
+.mm-editable-colors {
+    position: relative;
+    touch-action: none;
+}
+.mm-color-picker {
+    /* amazing solution from : https://stackoverflow.com/a/12817454 */
+    --d: var(--main-size); /* image size */
+    --rel: 0.1; /* how much extra space we want between images, 1 = one image size */
+    --r: calc(.5*(1 + var(--rel))*var(--d)/var(--tan)); /* circle radius */
+    --s: calc(2*var(--r) + var(--d)); /* container size */
+    position: absolute;
+    width: var(--s); 
+    height: var(--s);
+
+    border: calc(var(--main-size) * 1.5) solid var(--light-col);
+    border-radius: calc(var(--r)*2);
+    padding: calc(var(--main-size) / 2 - 1px);
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.mm-color-picker div {
+    position: absolute;
+    top: 50%; left: 50%;
+    margin: calc(-.5*var(--d));
+    width: var(--d); height: var(--d);
+    --az: calc(var(--i)*1turn/var(--m));
+    transform: 
+      rotate(var(--az)) 
+      translate(var(--r))
+      rotate(calc(-1*var(--az)))
+}
+
+/* ***********************************
+color buttons
+*********************************** */
+
+.mm-config {
+    padding-top: 10px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.mm-config section {
+    background-color: var(--light-col);
+    margin: 2px;
+    border-radius: 40px;
+    padding: 20px;
+}
+
+
+.slct-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.slct-item {
+    all: unset;
+    border: 1px solid transparent;
+    border-radius: 40px;
+    height: 40px;
+    min-width: 40px;
+    margin: 5px;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: red; */
+}
+.slct-item:hover {
+    border: 1px solid var(--strong-col);
+    background-color: var(--mid-col);
+}
+.slct-item[isselected=true] {
+    border-color: var(--strong-col);
+}
+
+/* .slct-item[isselected=true]:hover {
+    border-color: var(--midcolor);
+} */
