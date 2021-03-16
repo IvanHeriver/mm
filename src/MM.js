@@ -1,18 +1,9 @@
 import React, {useState, useEffect} from "react";
-// import "./Mastermind.css"
+import "./MM.css"
 import {randomGuess, checkGuess} from "./game_logic/utils";
 import {MMtoGuess, MMguessBuilder, MMguess} from "./MMcomp";
-import "./MastermindComp.css";
-// import close_img from "./img/reset_img.svg"
-// import SelectBtn from "./customWidgets/select-btn"
 import {MMconfig, MMbuttons} from "./MMcfg";
-
-const randomId = () => {
-    return (
-        Math.random().toString(36)
-            .replace("0.", "").substring(0, 10)
-    )
-}
+import { createPortal } from "react-dom";
 
 const allColors = [
     "transparent",
@@ -26,17 +17,20 @@ const allColors = [
     "turquoise",
 ]
 
-
 const MM = () => {
     // const [language, setLanguage] = useState("fr");
     const [gameDim, setGameDim] = useState({
         holes: 4,
         colors: 6,
     })
+    const [tmpNcolors, setTmpNcolors] = useState(6);
+    const [tmpNholes, setTmpNholes] = useState(4);
+
     // console.log(allColors.slice(0, gameDim.colors+1))
     const [colorOptions, setColorOptions] = useState(allColors.slice(0, gameDim.colors+1))
     useEffect(()=>{
         setColorOptions(allColors.slice(0, gameDim.colors+1))
+        updateGameLayout();
     }, [gameDim, setColorOptions])
 
     const [toGuess, setToGuess] = useState(randomGuess(gameDim.holes, gameDim.colors))
@@ -63,9 +57,10 @@ const MM = () => {
     }
 
     const onNewGame = () => {
+        setGameDim(gd=>({...gd, holes: tmpNholes, colors: tmpNcolors}))
         setGuesses([])
-        setCurrentGuess(Array(gameDim.holes).fill(0))
-        setToGuess(randomGuess(gameDim.holes, gameDim.colors))
+        setCurrentGuess(Array(tmpNholes).fill(0))
+        setToGuess(randomGuess(tmpNholes, tmpNcolors))
         setGameOver(false)
         resetTimer();
     }
@@ -90,65 +85,88 @@ const MM = () => {
         console.log("opening config")
         setConfigOpen(open);
     }
+    window.addEventListener("resize", ()=>updateGameLayout())
+    const updateGameLayout = () => {
+        const r = document.querySelector(":root");
+        // let v = parseInt(window.getComputedStyle(r).getPropertyValue('--refwidth'));
+        // if (v > 25) v--;
+        // console.log(v);
+        const n = gameDim.holes;
+        // const W = 40;
+        // const w = W / 2;
+        const M = 2;
+        // const T = (n * (W + 2*M)) + (n * (W / 2 + 2*M)) + (2 * (W + M) );
+        // const T = W * (n+n/2+2) + M * (4*n + 2) + 4;
+        const T = document.body.clientWidth; 
+        const nW = (T - 4 - M * (4*n + 2)) / (n + n/3 + 2)
+        const W = Math.min(nW, 40);
+        // nW+2nM + 1/2nW + 2nM + 2W + 2M
+        // W(n+n/2+2) + 4nM + 2M
+
+        // console.log("*****")
+        // console.log(T)
+        // console.log(document.body.clientWidth)
+
+        r.style.setProperty("--center-size", (n * (W + 2*M)) + "px");
+        r.style.setProperty("--left-size", (n * (W / 2 + 2*M)) + "px");
+        r.style.setProperty("--right-size", (2 * (W + M) ) + "px");
+        r.style.setProperty("--main-size", W + "px");
+        r.style.setProperty("--secondary-size", W / 3 + "px");
+    }
 
     return (
-        <div className="mm-app-container">
-            {/* <div className="title">
-                MindMaster
-            </div>           */}
-            <div className="game-config-container">
-                {configOpen ? (
-                <MMconfig
-                    onCloseConfig={()=>onToggleConfig(false)}
-                    nHoles={gameDim.holes}
-                    onNumberOfHolesChange={(n)=>(setGameDim(gd=>({...gd, holes:n})))}
-                    nColors={gameDim.colors}
-                    onNumberOfColorsChange={(n)=>(setGameDim(gd=>({...gd, colors:n})))}
-                    clickSelectMode={clickSelectMode ? 1 : 0}
-                    onSelectModeChange={(c)=>(setClickSelectMode(c))}
-                    timerVisible={timerVisible}
-                    onChangeTimerVisibility={(v)=>setTimerVisible(v)}
-                />
-                 ) : (
+        <div className="mm-container">
+            {configOpen ? (
+            <MMconfig
+                onCloseConfig={()=>onToggleConfig(false)}
+                nHoles={gameDim.holes}
+                onNumberOfHolesChange={(n)=>(setTmpNholes(n))}
+                nColors={gameDim.colors}
+                onNumberOfColorsChange={(n)=>(setTmpNcolors(n))}
+                clickSelectMode={clickSelectMode ? 1 : 0}
+                onSelectModeChange={(c)=>(setClickSelectMode(c))}
+                timerVisible={timerVisible}
+                onChangeTimerVisibility={(v)=>setTimerVisible(v)}
+            />
+                ) : (
+        
             
-                
-                <div className="game">
-                    {/* main buttons */}
-                    <MMbuttons 
-                        onNewGame={onNewGame}
-                        onGiveUp={onGiveUp}
-                        onOpenConfig={()=>{onToggleConfig(true)}}
-                    />
-                    {/* to guess object */}
-                    <MMtoGuess
-                        toGuess={gameOver ? toGuess : Array(toGuess.length).fill(0) }
+            <div className="mm-game">
+                {/* main buttons */}
+                <MMbuttons 
+                    onNewGame={onNewGame}
+                    onGiveUp={onGiveUp}
+                    onOpenConfig={()=>{onToggleConfig(true)}}
+                />
+                {/* to guess object */}
+                <MMtoGuess
+                    toGuess={gameOver ? toGuess : Array(toGuess.length).fill(0) }
+                    colorOptions={colorOptions}
+                    timerVisible={timerVisible}
+                    time={time}
+                    
+                />
+                {/* guesses */}
+                {guesses.map((e, i)=> {
+                    return (
+                        <MMguess key={i}
+                        colors={e.g}
+                        result={e.r}
                         colorOptions={colorOptions}
-                        timerVisible={timerVisible}
-                        time={time}
-                        
-                    />
-                    {/* guesses */}
-                    {guesses.map((e, i)=> {
-                        return (
-                            <MMguess key={i}
-                            colors={e.g}
-                            result={e.r}
-                            colorOptions={colorOptions}
-                            number={i + 1}
-                             />
-                        )
-                    })}
-                    {/* new guess */}
-                    {gameOver ? null : <MMguessBuilder
-                        colorOptions={colorOptions}
-                        colors={currentGuess}
-                        setColors={(c)=>{setCurrentGuess(c)}}
-                        onSubmit={onSubmitGuess}
-                        clickSelectMode={clickSelectMode}
-                    />}
-                </div>
-                )}
+                        number={i + 1}
+                            />
+                    )
+                })}
+                {/* new guess */}
+                {gameOver ? null : <MMguessBuilder
+                    colorOptions={colorOptions}
+                    colors={currentGuess}
+                    setColors={(c)=>{setCurrentGuess(c)}}
+                    onSubmit={onSubmitGuess}
+                    clickSelectMode={clickSelectMode}
+                />}
             </div>
+            )}
         </div>
     )
 }
