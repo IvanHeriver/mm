@@ -2,23 +2,29 @@ import SelectBtn from "./customWidgets/select-btn"
 import React from "react";
 import "./MastermindConfig.css"
 
+const MMbuttons = ({onNewGame, onGiveUp, onOpenConfig}) => {
+    return (
+        <>
+        <button onClick={onGiveUp}> 
+            <img src={process.env.PUBLIC_URL+"/show_img.svg"} className="btn-img" draggable="false"/>
+            </button>    
+            <button onClick={onNewGame}>
+            <img src={process.env.PUBLIC_URL+"/restart_img.svg"} className="btn-img" draggable="false"/>
+            </button>    
+            <button onClick={()=>onOpenConfig()}>
+                <img src={process.env.PUBLIC_URL+"/config_img.svg"} className="btn-img" draggable="false"/>
+            </button>
+        </>
+    )
+}
+
 const MMconfig = ({onCloseConfig, 
     nHoles, onNumberOfHolesChange,
     nColors, onNumberOfColorsChange,
-    clickSelectMode, onSelectModeChange
+    clickSelectMode, onSelectModeChange,
+    timerVisible, onChangeTimerVisibility
     }) => {
 
-
-    // const languages = [
-    //     {
-    //         id: "fr",
-    //         img: "fr_img.png"
-    //     },
-    //     {
-    //         id: "en", 
-    //         img: "en_img.png"
-    //     }
-    // ]
 
     const selectionModes = [
         "Click and slide/drag",
@@ -31,34 +37,16 @@ const MMconfig = ({onCloseConfig,
     const numberColors = [
         3, 4, 5, 6, 7, 8
     ]
-    // console.log("HOLES")
-    // console.log(nHoles)
-    // console.log(numberHoles.indexOf(nHoles));
+
+    const showTimerOptions = [
+        "No", "Yes"
+    ]
 
     return (
         <div className="mm-config">
             <button className="mm-btn-close-config" onClick={()=>onCloseConfig()}>
                 <img src={process.env.PUBLIC_URL+"/reset_img.svg"} className="btn-img" draggable="false"/>
             </button>
-            {/* <section>
-                <h3>Which language do you want to use?</h3>
-                <SelectBtn 
-                items={languages.map(e=>{
-                    return (
-                        <img src={process.env.PUBLIC_URL+"/"+e.img}
-                        draggable="false"/>
-                    )
-                })}
-                onChange={(a, i)=>{
-                    // console.log(a)
-                    // console.log(i)
-                }}
-                class_container="slct-container"
-                class_item="slct-item"
-                selected={0}
-                multiselect={false}
-                />
-            </section> */}
             <section>
                 <h3>How do you want to select the colors?</h3>
                 <SelectBtn 
@@ -114,9 +102,28 @@ const MMconfig = ({onCloseConfig,
                 multiselect={false}
                 />
             </section>
+            <section>
+                <h3>Do you want do see the timer ?</h3>
+                <p>(will only take effect for the next game)</p>
+                <SelectBtn 
+                items={showTimerOptions.map(e=>{
+                    return (
+                        <p>{e}</p>
+                    )
+                })}
+                onChange={(a, i)=>{
+                    console.log(i)
+                    onChangeTimerVisibility(i[0]===1)
+                }}
+                class_container="slct-container"
+                class_item="slct-item"
+                selected={timerVisible ? 1 : 0}
+                multiselect={false}
+                />
+            </section>
         </div>
     )
 }
 
 
-export default MMconfig;
+export {MMconfig, MMbuttons};

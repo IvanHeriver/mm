@@ -1,12 +1,4 @@
 import { useEffect, useState } from "react"
-// import Select from "react-select"
-// import play_img from "./img/play_img.svg"
-// import reset_img from "./img/reset_img.svg"
-// import restart_img from "./img/restart_img.svg"
-// import show_img from "./img/show_img.svg"
-// import timer_img from "./img/timer_img.svg"
-// import notimer_img from "./img/notimer_img.svg"
-// import config_img from "./img/config_img.svg"
 
 const MMcolor = ({color, nomargin=false}) => {
     const bgColor = color === "transparent" ? "grey" : "transparent"
@@ -17,7 +9,6 @@ const MMcolor = ({color, nomargin=false}) => {
         >
         {
             color === "transparent" ? null :
-            // <img src={process.env.PUBLIC_URL+"/"+color+"_pin.png"} className="one-color-img" draggable="false" width="40px" height="40px"/>
             <img src={process.env.PUBLIC_URL+"/"+color+"_pin.png"} className="one-color-img" draggable="false"/>
         }
         </button>
@@ -25,42 +16,40 @@ const MMcolor = ({color, nomargin=false}) => {
 }
 
 
-const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp, time, onOpenConfig}) => {
-    const [showTimer, setShowTimer] = useState(true);
+const MMtoGuess = ({toGuess, colorOptions, time, timerVisible}) => {
+    // const [showTimer, setShowTimer] = useState(true);
     const formatTime = (t) => {
-        // if (t === 0)  return "00:00"
         let m = Math.floor(t / 60);
         let s = t - m * 60;
         if (m < 10) m = "0"+m
         if (s < 10) s = "0"+s
         return m+":"+s
     }
+    console.log(time)
+    console.log(timerVisible)
     return (
         <div className="mm-toguess-container">
-        <div className="one-color-row">
+        {/* <div className="one-color-row">
             <button onClick={onGiveUp}> 
-            {/* <img src={show_img} className="btn-img" draggable="false"/> */}
             <img src={process.env.PUBLIC_URL+"/show_img.svg"} className="btn-img" draggable="false"/>
             </button>    
             <button onClick={onNewGame}>
-            {/* <img src={restart_img} className="btn-img" draggable="false"/> */}
             <img src={process.env.PUBLIC_URL+"/restart_img.svg"} className="btn-img" draggable="false"/>
             </button>    
-            {
-                showTimer ? <div className="mm-timer"><div>{formatTime(time)}</div></div> : null
-            }
+
             <button onClick={()=>setShowTimer(t=>!t)}>
-                {/* <img src={showTimer ? notimer_img : timer_img} className="btn-img" draggable="false"/> */}
                 <img src={showTimer ? (
                     process.env.PUBLIC_URL+"/notimer_img.svg" 
                     ): ( process.env.PUBLIC_URL+"/timer_img.svg" 
                     )} className="btn-img" draggable="false"/>
             </button>
             <button onClick={()=>onOpenConfig()}>
-                {/* <img src={config_img} className="btn-img" draggable="false"/> */}
                 <img src={process.env.PUBLIC_URL+"/config_img.svg"} className="btn-img" draggable="false"/>
             </button>
-        </div>
+        </div> */}
+        {
+                timerVisible ? <div className="mm-timer"><div>{formatTime(time)}</div></div> : null
+        }
         <div className="one-color-row mm-rounded-border">
             {
                 toGuess.map((e, i)=> {

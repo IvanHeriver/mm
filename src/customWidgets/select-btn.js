@@ -31,7 +31,7 @@ const SelectBtn = ({items, onChange, selected=null, multiselect=false,
     const [selectedItems, setSelectedItems] = useState(InitSelectBtn(items.length, selected, multiselect));
 
     useEffect(()=> {
-        console.log("Has changed: " + selectedItems)
+        // console.log("Has changed: " + selectedItems)
         if (onChange) {
             const selItems = [];
             selectedItems.map((e, i)=> {

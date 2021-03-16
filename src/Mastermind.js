@@ -5,7 +5,7 @@ import {MMtoGuess, MMguessBuilder, MMguess} from "./MastermindComp";
 import "./MastermindComp.css";
 // import close_img from "./img/reset_img.svg"
 // import SelectBtn from "./customWidgets/select-btn"
-import MMconfig from "./MastermindConfig";
+import {MMconfig, MMbuttons} from "./MastermindConfig";
 
 const randomId = () => {
     return (
@@ -38,12 +38,13 @@ const Mastermind = () => {
     useEffect(()=>{
         setColorOptions(allColors.slice(0, gameDim.colors+1))
     }, [gameDim, setColorOptions])
-    
+
     const [toGuess, setToGuess] = useState(randomGuess(gameDim.holes, gameDim.colors))
     const [gameOver, setGameOver] = useState(false);
     const [guesses, setGuesses] = useState([]);
     const [currentGuess, setCurrentGuess] = useState(Array(gameDim.holes).fill(0))
     const [configOpen, setConfigOpen] = useState(false)
+    const [timerVisible, setTimerVisible] = useState(true)
     const [clickSelectMode, setClickSelectMode] = useState(false)
     
     const [time, setTime] = useState(0);
@@ -105,17 +106,26 @@ const Mastermind = () => {
                     onNumberOfColorsChange={(n)=>(setGameDim(gd=>({...gd, colors:n})))}
                     clickSelectMode={clickSelectMode ? 1 : 0}
                     onSelectModeChange={(c)=>(setClickSelectMode(c))}
+                    timerVisible={timerVisible}
+                    onChangeTimerVisibility={(v)=>setTimerVisible(v)}
                 />
                  ) : (
+            
+                
                 <div className="game">
+                    {/* main buttons */}
+                    <MMbuttons 
+                        onNewGame={onNewGame}
+                        onGiveUp={onGiveUp}
+                        onOpenConfig={()=>{onToggleConfig(true)}}
+                    />
                     {/* to guess object */}
                     <MMtoGuess
                         toGuess={gameOver ? toGuess : Array(toGuess.length).fill(0) }
                         colorOptions={colorOptions}
-                        onNewGame={onNewGame}
-                        onGiveUp={onGiveUp}
+                        timerVisible={timerVisible}
                         time={time}
-                        onOpenConfig={()=>{onToggleConfig(true)}}
+                        
                     />
                     {/* guesses */}
                     {guesses.map((e, i)=> {
