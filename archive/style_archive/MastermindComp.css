@@ -1,0 +1,197 @@
+:root {
+    --refwidth: 40px;
+}
+
+/* in game buttons */
+.game button {
+    height: var(--refwidth);
+    width: var(--refwidth);
+}
+
+.btn-img {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    min-width: 100%;
+    max-height: 100%;
+}
+
+/* positionning of main game elements */
+
+.one-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+/* .mm-ingame-btns-left {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-100%, -50%);
+}
+.mm-ingame-btns-right {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(100%, -50%);
+    display: flex;
+    justify-content: center;
+} */
+.one-color-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 5px;
+    position: relative;
+    /* margin-left: auto;
+    margin-right: auto; */
+}
+
+.mm-rounded-border {
+    border: 1px solid var(--strcolor);
+    border-radius: var(--refwidth);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.mm-toguess-container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* the colored pin formatting */
+.one-color {
+    margin: 2px;
+    border: 1px solid black;
+}
+.one-color-btn {
+    margin: 2px;
+    /* margin: 0; */
+    padding: 0;
+    width: var(--refwidth);
+    height: var(--refwidth);
+    border: none;
+    cursor:default;
+}
+.one-color-btn:hover {
+    border: none;
+}
+.one-color-img {
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    max-height: 100%;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+/* editable colors */
+.mm-editable-color {
+    position: relative;
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.mm-color-options {
+    /* amazing solution from : https://stackoverflow.com/a/12817454 */
+    --d: var(--refwidth); /* image size */
+    --rel: 0.1; /* how much extra space we want between images, 1 = one image size */
+    --r: calc(.5*(1 + var(--rel))*var(--d)/var(--tan)); /* circle radius */
+    --s: calc(2*var(--r) + var(--d)); /* container size */
+    position: absolute;
+    width: var(--s); 
+    height: var(--s);
+
+    border: calc(var(--refwidth) * 1.5) solid var(--ligcolor);
+    border-radius: calc(var(--r)*2);
+    padding: calc(var(--refwidth) / 2 - 1px);
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+.mm-color-options div {
+    position: absolute;
+    top: 50%; left: 50%;
+    margin: calc(-.5*var(--d));
+    width: var(--d); height: var(--d);
+    --az: calc(var(--i)*1turn/var(--m));
+    transform: 
+      rotate(var(--az)) 
+      translate(var(--r))
+      rotate(calc(-1*var(--az)))
+}
+
+/* result pins */
+.mm-result {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-content: center;
+    flex-wrap: wrap;
+    /* position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-100%, -50%); */
+    /* width: 80px; */
+    /* border: 1px solid red; */
+    width: calc(var(--refwidth) * 2);
+    padding-right: 5px;
+}
+.mm-res-pin {
+    width: calc(var(--refwidth) / 3);
+    height: calc(var(--refwidth) / 3);
+    border-radius: calc(var(--refwidth) / 3);
+    margin: 2px;
+    border: 1px solid transparent;
+}
+.gcgp {
+    background-color: black;
+}
+.gcbp {
+    background-color: white;
+    border: 1px solid black;
+}
+
+/* text sections */
+.mm-timer {
+    font-size: 1.2rem;
+    padding-left: 10px;
+    padding-right: 10px;
+    /* margin: auto; */
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.mm-number {
+    font-size: 1.3rem;
+    font-weight: bold;
+    /* height: var(--refwidth);
+    width: var(--refwidth); */
+    /* padding: 5px;
+    margin: 5px; */
+    /* margin: auto; */
+    /* text-align: center;
+    display: flex;
+    flex-direction: row; */
+    /* justify-content: center; */
+    /* align-content: ; */
+    padding: 5px;
+    width: calc(var(--refwidth) * 2);
+}
+
+/* .mm-number p {
+
+} */

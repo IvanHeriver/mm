@@ -1,0 +1,95 @@
+
+.mm-config {
+    position: absolute;
+    top: 0;
+    /* bottom: 0; */
+    right: 0;
+    left:0;
+    min-height: 100vh;
+    z-index: 110;
+    background-color: var(--topcolor);
+    padding: 10px;
+    padding-top: 50px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.mm-config section {
+    background-color: var(--botcolor);
+    margin: 5px;
+    border-radius: 20px;
+    padding: 10px;
+    /* margin: auto; */
+    margin-left: auto;
+    margin-right: auto;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center; */
+}
+
+.mm-config section h3{
+    font-size: 16px;
+    padding-bottom: 10px;
+}
+
+.mm-btn-close-config {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    /* ba */
+}
+
+.select-opt {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    margin: 5px;
+    margin-bottom: 0;
+}
+
+/* SELECTION BUTTON:  */
+
+.slct-container {
+    padding: 0;
+}
+
+.slct-item {
+    all: unset;
+    border: 2px solid transparent;
+    border-radius: 40px;
+    height: 40px;
+    min-width: 40px;
+    margin: 5px;
+    cursor: pointer;
+}
+.slct-item:hover {
+    all: unset;
+    border: 2px solid var(--midcolor);
+    border-radius: 40px;
+    height: 40px;
+    min-width: 40px;
+    margin: 5px;
+    cursor: pointer;
+}
+.slct-item[isselected=true] {
+    border-color: var(--strcolor);
+}
+
+.slct-item[isselected=true]:hover {
+    border-color: var(--midcolor);
+}
+
+.slct-item img{
+    max-height: 100%;
+    max-width: 100%;
+    border-radius: 40px;
+}
+.slct-item p{
+    padding: 5px;
+    text-align: center;
+}
