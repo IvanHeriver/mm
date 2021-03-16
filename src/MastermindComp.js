@@ -38,15 +38,6 @@ const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp, time, onOpenConf
     return (
         <div className="mm-toguess-container">
         <div className="one-color-row">
-            <button onClick={()=>{
-                const r = document.querySelector(":root");
-                let v = parseInt(window.getComputedStyle(r).getPropertyValue('--refwidth'));
-                if (v > 25) v--;
-                console.log(v);
-                r.style.setProperty("--refwidth", v+"px");
-            }}> 
-                <img src={process.env.PUBLIC_URL+"/zoomout_img.svg"} className="btn-img" draggable="false"/>
-            </button>    
             <button onClick={onGiveUp}> 
                 <img src={process.env.PUBLIC_URL+"/show_img.svg"} className="btn-img" draggable="false"/>
             </button>
@@ -64,6 +55,15 @@ const MMtoGuess = ({toGuess, colorOptions, onNewGame, onGiveUp, time, onOpenConf
             </button>
             <button onClick={()=>onOpenConfig()}>
                 <img src={process.env.PUBLIC_URL+"/config_img.svg"} className="btn-img" draggable="false"/>
+            </button>
+            <button onClick={()=>{
+                const r = document.querySelector(":root");
+                let v = parseInt(window.getComputedStyle(r).getPropertyValue('--refwidth'));
+                if (v > 25) v--;
+                console.log(v);
+                r.style.setProperty("--refwidth", v+"px");
+            }}> 
+                <img src={process.env.PUBLIC_URL+"/zoomout_img.svg"} className="btn-img" draggable="false"/>
             </button>
             <button onClick={()=>{
                 const r = document.querySelector(":root");
