@@ -4,7 +4,10 @@ import React from "react";
 
 const MMbuttons = ({onNewGame, onGiveUp, onOpenConfig}) => {
     return (
-        <div className="mm-buttons">
+        <div className="mm-row">
+        <div className="mm-left"></div>
+        <div className="mm-right"></div>
+        <div className="mm-buttons mm-center">
         <button onClick={onGiveUp}> 
             <img src={process.env.PUBLIC_URL+"/show_img.svg"} className="btn-img" draggable="false"/>
             </button>    
@@ -14,6 +17,7 @@ const MMbuttons = ({onNewGame, onGiveUp, onOpenConfig}) => {
             <button onClick={()=>onOpenConfig()}>
                 <img src={process.env.PUBLIC_URL+"/config_img.svg"} className="btn-img" draggable="false"/>
             </button>
+        </div>
         </div>
     )
 }

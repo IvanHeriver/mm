@@ -70,6 +70,7 @@ result pins + text
 .mm-results {
     display: flex;
     align-items: center;
+    margin-right: 4px;
 }
 .mm-res {
     width: var(--secondary-size);
@@ -87,7 +88,7 @@ result pins + text
 
 .mm-txt {
     font-weight: bold;
-    padding-left: 10px;
+    margin-left: 2px;
 }
 
 /* ***********************************
@@ -97,18 +98,15 @@ app layout
 .mm-container {
     position: relative;
     min-height: 100vh;
-    /* background-color: wheat; */
 }
 
 .mm-game {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* background-color: violet; */
 }
 
 .mm-buttons {
-    /* background-color: yellow; */
     display: flex;
     justify-content: center;
 }
@@ -117,7 +115,6 @@ app layout
     border-radius: var(--main-size);
 }
 .mm-guessbuilder {
-    /* background-color: palegreen; */
     margin-bottom: calc(var(--main-size) * 2);
 }
 
@@ -135,32 +132,26 @@ app layout
 
 .mm-left {
     grid-area: left;
-    /* background-color: red; */
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    /* width: 100px; */
+    padding-right: 4px;
+    /* background-color: red; */
 }
 .mm-center {
     grid-area: center;
-    /* min-width: calc(8 * var(--main-size)); */
     display: flex;
     justify-content: center;
-    /* width: var(--center-size); */
-    /* width: 340px; */
 }
 .mm-right {
     grid-area: right;
-    /* background-color: red; */
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    /* width: calc(2 * var(--main-size)) */
+    padding-left: 4px;
+    /* background-color: red; */
 }
 
-/* .mm-row-center {
-    
-} */
 
 /* ***********************************
 color picker magic
@@ -212,7 +203,7 @@ color buttons
 }
 .mm-config section {
     background-color: var(--light-col);
-    margin: 2px;
+    margin: 4px 20px;
     border-radius: 40px;
     padding: 20px;
 }
@@ -232,17 +223,17 @@ color buttons
     margin: 5px;
     cursor: pointer;
     padding: 4px;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: red; */
 }
 .slct-item:hover {
     border: 1px solid var(--strong-col);
-    background-color: var(--mid-col);
 }
 .slct-item[isselected=true] {
     border-color: var(--strong-col);
+    background-color: var(--mid-col);
 }
 
 /* .slct-item[isselected=true]:hover {

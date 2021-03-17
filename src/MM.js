@@ -105,7 +105,7 @@ const MM = () => {
         const M = 2;
         // const T = (n * (W + 2*M)) + (n * (W / 2 + 2*M)) + (2 * (W + M) );
         // const T = W * (n+n/2+2) + M * (4*n + 2) + 4;
-        const T = document.body.clientWidth - 40; 
+        const T = document.body.clientWidth - 60; 
         const nW = (T - 4 - M * (4*n + 2)) / (n + n/3 + 2)
         const W = Math.min(nW, 40);
         // nW+2nM + 1/2nW + 2nM + 2W + 2M
