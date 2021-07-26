@@ -34,7 +34,7 @@ After a few guess you should be able to find the solutions such as in the exampl
 
 ![help_img_4](/public/help/help_4.png)
 
-You can customize the difficulty of the game in the configuration panel with: 
+You can customize the difficulty of the game in the configuration page with: 
 * the number of different colors (from 3 to 8 colors, default is 6)
 * the number of spots in a problem (from 3 to 8 spots, default is 4)
 
